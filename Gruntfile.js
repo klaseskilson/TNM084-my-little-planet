@@ -24,7 +24,7 @@ module.exports = function(grunt) {
     },
     watch: {
       client: {
-        files: ['**.js', 'index.html'],
+        files: ['**.js', '**.css', 'index.html'],
         tasks: ['build'],
       },
     },
@@ -38,9 +38,16 @@ module.exports = function(grunt) {
       },
       dist: {
         // the files to concatenate
-        src: ['src/**/*.js'],
+        src: ['node_modules/three/three.js', 'src/**/*.js'],
         // the location of the resulting JS file
         dest: 'dist/<%= pkg.name %>.js'
+      }
+    },
+    concat_css: {
+      options: {},
+      all: {
+        src: ['node_modules/normalize.css/normalize.css', 'stylesheets/**/*.css'],
+        dest: 'dist/<%= pkg.name %>.css'
       }
     },
     uglify: {
@@ -50,7 +57,8 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          '<%= concat.dist.dest %>': ['<%= concat.dist.dest %>']
+          '<%= concat.dist.dest %>': ['<%= concat.dist.dest %>'],
+          'dist/<%= pkg.name %>.css': ['dist/<%= pkg.name %>.css']
         }
       }
     },
@@ -69,7 +77,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('build', ['jshint', 'babel', 'concat']);
+  grunt.registerTask('build', ['jshint', 'babel', 'concat', 'concat_css']);
   grunt.registerTask('dev', ['build', 'http-server', 'watch']);
   grunt.registerTask('deploy', ['build', 'uglify', 'cacheBust']);
   grunt.registerTask('default', ['dev']);
