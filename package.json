@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "normalize.css": "^3.0.3",
+    "stats.js": "^1.0.0",
     "three": "^0.73.0"
   }
 }

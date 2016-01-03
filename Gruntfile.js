@@ -27,9 +27,13 @@ module.exports = function(grunt) {
         options: {
           interrupt: true,
         },
-        files: ['Gruntfile.js', 'src/**/*.js', '**.css', 'index.html'],
+        files: ['src/**/*.js', '**.css', 'index.html'],
         tasks: ['build'],
       },
+      gruntfile: {
+        files: ['Gruntfile.js'],
+        tasks: ['build', 'concat:libs']
+      }
     },
     jshint: {
       file: ['src/**/*.js']
@@ -40,7 +44,7 @@ module.exports = function(grunt) {
         sourceMap: true
       },
       libs: {
-        src: ['node_modules/three/three.js'],
+        src: ['node_modules/three/three.js', 'node_modules/stats.js/build/stats.min.js'],
         dest: 'dist/libs.js'
       },
       client: {
