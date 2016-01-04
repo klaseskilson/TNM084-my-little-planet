@@ -8,7 +8,8 @@ function loadShaders() {
   shaders = {
     planetVertex: 'shaders/planet_vertex.glsl',
     planetFragment: 'shaders/planet_fragment.glsl',
-    //noise: 'shaders/noise.glsl'
+    classicNoise: 'shaders/noise/classicnoise3D.glsl',
+    simplexNoise: 'shaders/noise/noise3D.glsl',
   };
 
   var numberOfShaders = _.size(shaders),
@@ -34,11 +35,14 @@ function init() {
 
   scene = new THREE.Scene();
 
-  var segments = 20;
+  var segments = 48;
   geometry = new THREE.SphereGeometry(300, segments, segments);
+  // set up materials with shaders, and prepend the
+  // shaders with the shader noise functions
   material = new THREE.ShaderMaterial({
-    vertexShader: shaders.planetVertex,
-    fragmentShader: shaders.planetFragment
+    vertexShader: shaders.simplexNoise + shaders.planetVertex,
+    fragmentShader: shaders.simplexNoise + shaders.planetFragment,
+    //wireframe: true
   });
 
   mesh = new THREE.Mesh(geometry, material);
@@ -64,7 +68,7 @@ function init() {
 function animate() {
   stats.begin();
 
-  mesh.rotation.x += 0.005;
+  //mesh.rotation.x += 0.005;
   mesh.rotation.y += 0.005;
   //mesh.rotation.z += 0.03;
 
