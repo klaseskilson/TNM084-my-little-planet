@@ -65,7 +65,8 @@ module.exports = function(grunt) {
     uglify: {
       options: {
         // the banner is inserted at the top of the output
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        banner: '/*! <%= pkg.name %>\n(c) <%= pkg.author %> 2016\n' +
+          'Built <%= grunt.template.today("yyyy-mm-dd hh:mm") %>\n<%= pkg.homepage%> */\n'
       },
       dist: {
         files: {
