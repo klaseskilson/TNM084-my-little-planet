@@ -44,7 +44,10 @@ module.exports = function(grunt) {
         sourceMap: true
       },
       libs: {
-        src: ['node_modules/three/three.js', 'node_modules/stats.js/build/stats.min.js'],
+        src: ['node_modules/three/three.js',
+          'node_modules/stats.js/build/stats.min.js',
+          'node_modules/lodash/index.js'
+        ],
         dest: 'dist/libs.js'
       },
       client: {

@@ -5,10 +5,11 @@ Methods for Images) at Linköping University.
 
 ### Setup
 
-Make sure you have [Node.js](https://nodejs.org/en/) installed. Then, install our
-dependencies using:
+Make sure you have [Node.js](https://nodejs.org/en/) installed. Then, install 
+`grunt-cli` and our our dependencies using:
 
 ```bash
+npm install -g grunt-cli
 npm install
 ```
 
