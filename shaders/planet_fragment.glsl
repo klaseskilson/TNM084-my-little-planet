@@ -4,7 +4,7 @@ uniform mat4 viewMatrix;
 uniform vec3 cameraPosition;
 */
 
-varying vec2 vUv;
+varying vec2 st;
 varying vec3 pos;
 varying float elevation;
 

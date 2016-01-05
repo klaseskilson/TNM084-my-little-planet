@@ -6,7 +6,7 @@ attribute vec2 uv;
 attribute vec2 uv2;
 */
 
-varying vec2 vUv;
+varying vec2 st;
 varying vec3 pos;
 varying float elevation;
 
@@ -24,6 +24,6 @@ void main() {
 //  elevation = amplitude * snoise(intensity * position);
   pos = position + normal * elevation * amplitude;
 
-  vUv = uv;
+  st = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 }
