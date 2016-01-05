@@ -8,8 +8,8 @@ loadShaders();
 
 function loadShaders() {
   shaders = {
-    planetVertex: 'shaders/planet_vertex.glsl',
-    planetFragment: 'shaders/planet_fragment.glsl',
+    surfaceVertex: 'shaders/surface_vertex.glsl',
+    surfaceFragment: 'shaders/surface_fragment.glsl',
     oceanVertex: 'shaders/ocean_vertex.glsl',
     oceanFragment: 'shaders/ocean_fragment.glsl',
     classicNoise3D: 'shaders/noise/classicnoise3D.glsl',
@@ -45,23 +45,31 @@ function init() {
     time: { // time is a float initialized to 0
       type: "f",
       value: 0.0
+    },
+    amplitude: {
+      type: "f",
+      value: 40.0
+    },
+    roughness: {
+      type: "f",
+      value: 5.0
     }
   };
 
   var segments = 128,
       size = 300;
-  surface = new THREE.SphereGeometry(size, segments, segments);
+  surface = new THREE.SphereGeometry(size, /*w*/segments, /*h*/segments);
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   surfaceMaterial = new THREE.ShaderMaterial({
     uniforms: uniforms,
-    vertexShader: shaders.simplexNoise3D + shaders.planetVertex,
-    fragmentShader: shaders.classicNoise3D + shaders.planetFragment,
+    vertexShader: shaders.simplexNoise3D + shaders.surfaceVertex,
+    fragmentShader: shaders.classicNoise3D + shaders.surfaceFragment,
     //wireframe: true
   });
   surfaceMesh = new THREE.Mesh(surface, surfaceMaterial);
 
-  ocean = new THREE.SphereBufferGeometry(size, segments, segments);
+  ocean = new THREE.SphereBufferGeometry(size, /*w*/segments, /*h*/segments);
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   oceanMaterial = new THREE.ShaderMaterial({
@@ -69,7 +77,7 @@ function init() {
     vertexShader: shaders.simplexNoise4D + shaders.oceanVertex,
     fragmentShader: shaders.oceanFragment,
     transparent: true,
-    wireframe: true
+    //wireframe: true
   });
   oceanMesh = new THREE.Mesh(ocean, oceanMaterial);
 

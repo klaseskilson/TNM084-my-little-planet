@@ -6,13 +6,14 @@ attribute vec2 uv;
 attribute vec2 uv2;
 */
 
+uniform float amplitude;
+
 varying vec2 st;
 varying vec3 pos;
 varying float elevation;
 
 void main() {
   float intensity = 0.01;
-  float amplitude = 40.0;
 
   elevation = snoise(intensity * position);
   elevation += 0.25 * snoise(intensity * position);
