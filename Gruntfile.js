@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       dev: {
         port: 3000,
         runInBackground: true,
-        cahce: 0
+        cache: 0
       }
     },
     babel: {
@@ -24,9 +24,16 @@ module.exports = function(grunt) {
     },
     watch: {
       client: {
-        files: ['**.js', 'index.html'],
+        options: {
+          interrupt: true,
+        },
+        files: ['src/**/*.js', '**.css', 'index.html'],
         tasks: ['build'],
       },
+      gruntfile: {
+        files: ['Gruntfile.js'],
+        tasks: ['build', 'concat:libs']
+      }
     },
     jshint: {
       file: ['src/**/*.js']
@@ -36,21 +43,35 @@ module.exports = function(grunt) {
         separator: ';\n',
         sourceMap: true
       },
-      dist: {
-        // the files to concatenate
+      libs: {
+        src: ['node_modules/three/three.js',
+          'node_modules/stats.js/build/stats.min.js',
+          'node_modules/lodash/index.js'
+        ],
+        dest: 'dist/libs.js'
+      },
+      client: {
         src: ['src/**/*.js'],
-        // the location of the resulting JS file
         dest: 'dist/<%= pkg.name %>.js'
+      }
+    },
+    concat_css: {
+      options: {},
+      all: {
+        src: ['node_modules/normalize.css/normalize.css', 'stylesheets/**/*.css'],
+        dest: 'dist/<%= pkg.name %>.css'
       }
     },
     uglify: {
       options: {
         // the banner is inserted at the top of the output
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        banner: '/*! <%= pkg.name %>\n(c) <%= pkg.author %> 2016\n' +
+          'Built <%= grunt.template.today("yyyy-mm-dd hh:mm") %>\n<%= pkg.homepage%> */\n'
       },
       dist: {
         files: {
-          '<%= concat.dist.dest %>': ['<%= concat.dist.dest %>']
+          '<%= concat.client.dest %>': ['<%= concat.client.dest %>'],
+          '<%= concat.libs.dest %>': ['<%= concat.libs.dest %>']
         }
       }
     },
@@ -63,14 +84,14 @@ module.exports = function(grunt) {
       },
       assets: {
         files: [{
-          src: ['index.html', '<%= concat.dist.dest %>']
+          src: ['index.html', '<%= concat.client.dest %>', '<%= concat.libs.dest %>']
         }]
       }
     }
   });
 
-  grunt.registerTask('build', ['jshint', 'babel', 'concat']);
-  grunt.registerTask('dev', ['build', 'http-server', 'watch']);
-  grunt.registerTask('deploy', ['build', 'uglify', 'cacheBust']);
+  grunt.registerTask('build', ['jshint', 'concat:client', 'concat_css']);
+  grunt.registerTask('dev', ['build', 'concat:libs', 'http-server', 'watch']);
+  grunt.registerTask('deploy', ['build', 'concat:libs', 'uglify', 'cacheBust']);
   grunt.registerTask('default', ['dev']);
 };
