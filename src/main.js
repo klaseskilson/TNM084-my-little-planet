@@ -14,6 +14,8 @@ function loadShaders() {
     oceanFragment: 'shaders/ocean_fragment.glsl',
     classicNoise3D: 'shaders/noise/classicnoise3D.glsl',
     simplexNoise3D: 'shaders/noise/noise3D.glsl',
+    classicNoise4D: 'shaders/noise/classicnoise4D.glsl',
+    simplexNoise4D: 'shaders/noise/noise4D.glsl',
   };
 
   var numberOfShaders = _.size(shaders),
@@ -59,15 +61,15 @@ function init() {
   });
   surfaceMesh = new THREE.Mesh(surface, surfaceMaterial);
 
-  ocean = new THREE.SphereGeometry(size, segments, segments);
+  ocean = new THREE.SphereBufferGeometry(size, segments, segments);
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   oceanMaterial = new THREE.ShaderMaterial({
     uniforms: uniforms,
-    vertexShader: shaders.simplexNoise3D + shaders.oceanVertex,
-    fragmentShader: shaders.classicNoise3D + shaders.oceanFragment,
+    vertexShader: shaders.simplexNoise4D + shaders.oceanVertex,
+    fragmentShader: shaders.oceanFragment,
     transparent: true,
-    //wireframe: true
+    wireframe: true
   });
   oceanMesh = new THREE.Mesh(ocean, oceanMaterial);
 
@@ -95,7 +97,8 @@ function init() {
 function animate() {
   stats.begin();
 
-  surfaceMaterial.uniforms.time.value = Date.now() - start;
+  oceanMaterial.uniforms.time.value = (Date.now() - start) / 250;
+  //oceanMaterial.uniforms.time.needsUpdate = true;
 
   //surfaceMesh.rotation.x += 0.005;
   surfaceMesh.rotation.y += 0.002;
