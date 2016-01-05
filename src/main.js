@@ -1,6 +1,6 @@
 /* main.js, start the client! */
-var camera, scene, renderer, stats, shaders;
-var geometry, material, mesh;
+var camera, scene, renderer, stats;
+var geometry, material, mesh, shaders, start;
 
 loadShaders();
 
@@ -35,13 +35,19 @@ function init() {
 
   scene = new THREE.Scene();
 
-  var segments = 48;
+  var segments = 128;
   geometry = new THREE.SphereGeometry(300, segments, segments);
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   material = new THREE.ShaderMaterial({
+    uniforms: {
+      time: { // time is a float initialized to 0
+        type: "f",
+        value: 0.0
+      }
+    },
     vertexShader: shaders.simplexNoise + shaders.planetVertex,
-    fragmentShader: shaders.simplexNoise + shaders.planetFragment,
+    fragmentShader: shaders.classicNoise + shaders.planetFragment,
     //wireframe: true
   });
 
@@ -62,14 +68,17 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   // lets start animating!
+  start = Date.now();
   animate();
 }
 
 function animate() {
   stats.begin();
 
+  material.uniforms.time.value = Date.now() - start;
+
   //mesh.rotation.x += 0.005;
-  mesh.rotation.y += 0.005;
+  mesh.rotation.y += 0.002;
   //mesh.rotation.z += 0.03;
 
   renderer.render(scene, camera);

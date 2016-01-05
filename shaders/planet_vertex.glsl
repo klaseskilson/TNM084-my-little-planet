@@ -1,7 +1,3 @@
-#ifdef GL_ES
-  precision highp float;
-#endif
-
 /*
 // default vertex attributes
 attribute vec3 position;
@@ -11,11 +7,22 @@ attribute vec2 uv2;
 */
 
 varying vec2 vUv;
+varying vec3 pos;
+varying float elevation;
 
 void main() {
-  float intensity = 20.0;
-  vec3 offset = normal * intensity * snoise(0.3 * position);
-  vec3 pos = position + offset;
+  float intensity = 0.01;
+  float amplitude = 40.0;
+
+  elevation = snoise(intensity * position);
+  elevation += 0.25 * snoise(intensity * position);
+  elevation += 0.25 * snoise(8.0 * position);
+//  elevation += 0.125 * snoise(16.0 * position);
+//  elevation += 0.0625 * snoise(32.0 * position);
+//  elevation += 0.03125 * snoise(64.0 * position);
+//  elevation += 0.0156 * snoise(128.0 * position);
+//  elevation = amplitude * snoise(intensity * position);
+  pos = position + normal * elevation * amplitude;
 
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
