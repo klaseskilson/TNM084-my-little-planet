@@ -46,6 +46,9 @@ function init() {
   var lightPos = new THREE.Vector3(500, 500, 500);
   light.position = lightPos;
 
+  var segments = 256;
+  var size = 300;
+
   var uniforms = {
     time: { // time is a float initialized to 0
       type: "f",
@@ -62,11 +65,9 @@ function init() {
     lightPos: {
       type: "v3",
       value: lightPos
-    }
+    },
   };
 
-  var segments = 256,
-      size = 300;
   surface = new THREE.SphereGeometry(size, /*w*/segments, /*h*/segments);
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
@@ -78,19 +79,18 @@ function init() {
   });
   surfaceMesh = new THREE.Mesh(surface, surfaceMaterial);
 
-  ocean = new THREE.SphereBufferGeometry(size, /*w*/segments, /*h*/segments);
+  ocean = new THREE.SphereBufferGeometry(size, /*w*/2 * segments, /*h*/segments);
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   oceanMaterial = new THREE.ShaderMaterial({
     uniforms: uniforms,
     vertexShader: shaders.simplexNoise4D + shaders.oceanVertex,
     fragmentShader: shaders.simplexNoise4D + shaders.oceanFragment,
+    derivatives: true,
     transparent: true,
     //wireframe: true
   });
   oceanMesh = new THREE.Mesh(ocean, oceanMaterial);
-
-
 
   scene.add(light);
   scene.add(surfaceMesh);
@@ -103,7 +103,9 @@ function init() {
   stats.domElement.style.left = '0px';
   stats.domElement.style.top = '0px';
 
+  // setup renderer and activate proper shader extensions
   renderer = new THREE.WebGLRenderer();
+  //renderer.context.getExtension('OES_standard_derivatives');
   onWindowResize();
 
   cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -123,8 +125,8 @@ function animate() {
   //oceanMaterial.uniforms.time.needsUpdate = true;
 
   //surfaceMesh.rotation.x += 0.005;
-  surfaceMesh.rotation.y += 0.002;
-  oceanMesh.rotation.y += 0.002;
+  //surfaceMesh.rotation.y += 0.002;
+  //oceanMesh.rotation.y += 0.002;
   //surfaceMesh.rotation.z += 0.03;
 
   cameraControls.update();
