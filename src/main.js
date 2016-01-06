@@ -4,6 +4,7 @@ var surface, surfaceMaterial, surfaceMesh,
     ocean, oceanMaterial, oceanMesh;
 var shaders, start;
 
+//setTimeout(loadShaders, 2000);
 loadShaders();
 
 function loadShaders() {
@@ -41,6 +42,10 @@ function init() {
 
   scene = new THREE.Scene();
 
+  var light = new THREE.PointLight(0xffffff, 1, 100);
+  var lightPos = new THREE.Vector3(500, 500, 500);
+  light.position = lightPos;
+
   var uniforms = {
     time: { // time is a float initialized to 0
       type: "f",
@@ -53,10 +58,14 @@ function init() {
     roughness: {
       type: "f",
       value: 5.0
+    },
+    lightPos: {
+      type: "v3",
+      value: lightPos
     }
   };
 
-  var segments = 128,
+  var segments = 256,
       size = 300;
   surface = new THREE.SphereGeometry(size, /*w*/segments, /*h*/segments);
   // set up materials with shaders, and prepend the
@@ -75,12 +84,13 @@ function init() {
   oceanMaterial = new THREE.ShaderMaterial({
     uniforms: uniforms,
     vertexShader: shaders.simplexNoise4D + shaders.oceanVertex,
-    fragmentShader: shaders.oceanFragment,
+    fragmentShader: shaders.simplexNoise4D + shaders.oceanFragment,
     transparent: true,
     //wireframe: true
   });
   oceanMesh = new THREE.Mesh(ocean, oceanMaterial);
 
+  scene.add(light);
   scene.add(surfaceMesh);
   scene.add(oceanMesh);
 

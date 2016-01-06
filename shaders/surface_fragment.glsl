@@ -5,6 +5,7 @@ uniform vec3 cameraPosition;
 */
 
 uniform float amplitude;
+uniform vec3 lightPos;
 
 varying vec2 st;
 varying vec3 pos;
