@@ -1,5 +1,5 @@
 /* main.js, start the client! */
-var camera, scene, renderer, stats;
+var camera, cameraControls, scene, renderer, stats;
 var surface, surfaceMaterial, surfaceMesh,
     ocean, oceanMaterial, oceanMesh;
 var shaders, start;
@@ -90,6 +90,8 @@ function init() {
   });
   oceanMesh = new THREE.Mesh(ocean, oceanMaterial);
 
+
+
   scene.add(light);
   scene.add(surfaceMesh);
   scene.add(oceanMesh);
@@ -103,6 +105,8 @@ function init() {
 
   renderer = new THREE.WebGLRenderer();
   onWindowResize();
+
+  cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
 
   document.body.appendChild(stats.domElement);
   document.body.appendChild(renderer.domElement);
@@ -123,6 +127,7 @@ function animate() {
   oceanMesh.rotation.y += 0.002;
   //surfaceMesh.rotation.z += 0.03;
 
+  cameraControls.update();
   renderer.render(scene, camera);
   stats.end();
 
