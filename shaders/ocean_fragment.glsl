@@ -42,7 +42,5 @@ void main () {
     + kd * clampDot(l, newNormal) * dLight
     + ks * pow(clampDot(r, v), shinyness) * sLight;
 
-  phong = clamp(phong, 0.0, 1.0);
-
   gl_FragColor = vec4(phong, 0.8);
 }

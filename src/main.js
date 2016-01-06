@@ -46,21 +46,18 @@ function init() {
   var lightPos = new THREE.Vector3(500, 500, 500);
   light.position = lightPos;
 
-  var segments = 256;
-  var size = 300;
-
   var uniforms = {
     time: { // time is a float initialized to 0
       type: "f",
       value: 0.0
     },
-    amplitude: {
+    altitude: {
       type: "f",
       value: 40.0
     },
     roughness: {
       type: "f",
-      value: 5.0
+      value: 1.5
     },
     lightPos: {
       type: "v3",
@@ -68,18 +65,23 @@ function init() {
     },
   };
 
-  surface = new THREE.SphereGeometry(size, /*w*/segments, /*h*/segments);
+  var heightSegments = 512;
+  var widthSegments = heightSegments;
+  var size = 300;
+
+  surface = new THREE.SphereGeometry(size, widthSegments, heightSegments);
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   surfaceMaterial = new THREE.ShaderMaterial({
     uniforms: uniforms,
     vertexShader: shaders.simplexNoise3D + shaders.surfaceVertex,
     fragmentShader: shaders.classicNoise3D + shaders.surfaceFragment,
+    derivatives: true,
     //wireframe: true
   });
   surfaceMesh = new THREE.Mesh(surface, surfaceMaterial);
 
-  ocean = new THREE.SphereBufferGeometry(size, /*w*/2 * segments, /*h*/segments);
+  ocean = new THREE.SphereBufferGeometry(size, widthSegments, heightSegments);
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   oceanMaterial = new THREE.ShaderMaterial({

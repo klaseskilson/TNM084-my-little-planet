@@ -4,7 +4,6 @@ uniform mat4 viewMatrix;
 uniform vec3 cameraPosition;
 */
 
-uniform float amplitude;
 uniform vec3 lightPos;
 
 varying vec2 st;
@@ -16,11 +15,15 @@ vec3 smth (vec3 a, vec3 b, float m) {
 }
 
 void main () {
-  float forest = 0.3 + 0.2 * cnoise(pos * 0.5);
-  vec3 groundColor = vec3(0.0, forest, 0.0);
+  float offset = cnoise(pos);
+  vec3 groundColor = vec3(0.0, 0.3, 0.0);
+  groundColor.g += 0.2 * cnoise(pos * 0.5);
   vec3 sandColor = vec3(0.75, 0.68, 0.39);
+  sandColor *= 1.0 - (0.2 * offset);
   vec3 rockColor = vec3(0.3, 0.3, 0.3);
+  rockColor *= 1.0 - (0.2 * offset);
   vec3 snowColor = vec3(1.0, 1.0, 1.0);
+  snowColor *= 1.0 - (0.1 * offset);
 
   // interpolation distance between biomes
   float itpr = 0.02;
@@ -46,6 +49,19 @@ void main () {
   clr = mix(clr, groundColor, ground);
   clr = mix(clr, rockColor, rock);
   clr = mix(clr, snowColor, snow);
+
+  float ka = 0.01;
+  float kd = 1.0;
+
+  // find new normal for current point
+  vec3 dx = dFdx(pos);
+  vec3 dy = dFdy(pos);
+  vec3 newNormal = normalize(cross(dx, dy));
+
+  vec3 l = normalize(lightPos - pos);
+
+  // apply diffuse phong
+  clr *= kd * dot(l, newNormal);
 
   gl_FragColor = vec4(clr, 1.0);
 }
