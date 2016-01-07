@@ -1,6 +1,7 @@
 /* main.js, start the client! */
 var camera, cameraControls, scene, renderer, stats;
-var surface, surfaceMaterial, surfaceMesh,
+var sharedUniforms,
+    surface, surfaceMaterial, surfaceMesh,
     ocean, oceanMaterial, oceanMesh;
 var shaders, start;
 
@@ -46,22 +47,10 @@ function init() {
   var lightPos = new THREE.Vector3(200, 200, 500);
   light.position = lightPos;
 
-  var uniforms = {
+  sharedUniforms = {
     time: { // time is a float initialized to 0
       type: "f",
       value: 0.0
-    },
-    altitude: {
-      type: "f",
-      value: 40.0
-    },
-    roughness: {
-      type: "f",
-      value: 1.5
-    },
-    intensity: {
-      type: "f",
-      value: 0.1
     },
     lightPos: {
       type: "v3",
@@ -77,7 +66,12 @@ function init() {
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   surfaceMaterial = new THREE.ShaderMaterial({
-    uniforms: uniforms,
+    uniforms: _.extend({
+      altitude: {
+        type: "f",
+        value: 40.0
+      },
+    }, sharedUniforms),
     vertexShader: shaders.simplexNoise3D + shaders.surfaceVertex,
     fragmentShader: shaders.classicNoise3D + shaders.surfaceFragment,
     derivatives: true,
@@ -89,7 +83,16 @@ function init() {
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   oceanMaterial = new THREE.ShaderMaterial({
-    uniforms: uniforms,
+    uniforms: _.extend({
+      roughness: {
+        type: "f",
+        value: 1.5
+      },
+      intensity: {
+        type: "f",
+        value: 0.1
+      },
+    }, sharedUniforms),
     vertexShader: shaders.simplexNoise4D + shaders.oceanVertex,
     fragmentShader: shaders.simplexNoise4D + shaders.oceanFragment,
     derivatives: true,
@@ -127,13 +130,7 @@ function init() {
 function animate() {
   stats.begin();
 
-  oceanMaterial.uniforms.time.value = (Date.now() - start) / 250;
-  //oceanMaterial.uniforms.time.needsUpdate = true;
-
-  //surfaceMesh.rotation.x += 0.005;
-  //surfaceMesh.rotation.y += 0.002;
-  //oceanMesh.rotation.y += 0.002;
-  //surfaceMesh.rotation.z += 0.03;
+  sharedUniforms.time.value = (Date.now() - start) / 250;
 
   cameraControls.update();
   renderer.render(scene, camera);
