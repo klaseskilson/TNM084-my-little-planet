@@ -8,7 +8,6 @@ attribute vec2 uv2;
 
 uniform float altitude;
 
-varying vec2 st;
 varying vec3 pos;
 varying float elevation;
 
@@ -21,7 +20,5 @@ void main() {
   }
 
   pos = position + normal * elevation * altitude;
-
-  st = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 }

@@ -6,7 +6,6 @@ uniform vec3 cameraPosition;
 
 uniform vec3 lightPos;
 
-varying vec2 st;
 varying vec3 pos;
 varying float elevation;
 
