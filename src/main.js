@@ -43,7 +43,7 @@ function init() {
   scene = new THREE.Scene();
 
   var light = new THREE.PointLight(0xffffff, 1, 100);
-  var lightPos = new THREE.Vector3(500, 500, 500);
+  var lightPos = new THREE.Vector3(200, 200, 500);
   light.position = lightPos;
 
   var uniforms = {
@@ -59,13 +59,17 @@ function init() {
       type: "f",
       value: 1.5
     },
+    intensity: {
+      type: "f",
+      value: 0.1
+    },
     lightPos: {
       type: "v3",
       value: lightPos
     },
   };
 
-  var heightSegments = 512;
+  var heightSegments = 256;
   var widthSegments = heightSegments;
   var size = 300;
 
