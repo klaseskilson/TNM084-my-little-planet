@@ -63,7 +63,7 @@ function init() {
     },
   };
 
-  var heightSegments = 256;
+  var heightSegments = 512;
   var widthSegments = heightSegments;
   var radius = 300;
 
