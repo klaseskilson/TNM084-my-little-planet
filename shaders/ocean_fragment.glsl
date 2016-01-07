@@ -16,7 +16,7 @@ void main () {
   float ka = 0.1;
   float kd = 1.0;
   float ks = 1.0;
-  float shinyness = 10.0;
+  float shinyness = 20.0;
 
   // find new normal for current point
   vec3 dx = dFdx(pos);
