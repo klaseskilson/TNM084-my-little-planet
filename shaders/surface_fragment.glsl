@@ -68,7 +68,7 @@ void main () {
   clr = mix(clr, rockColor, rock);
   clr = mix(clr, snowColor, snow);
 
-  float ka = 0.01;
+  float ka = 0.1;
   float kd = 1.0;
 
   // find new normal for current point
@@ -78,8 +78,9 @@ void main () {
 
   vec3 l = normalize(lightPos - pos);
 
-  // apply diffuse phong
-  clr *= kd * dot(l, newNormal);
+  // apply ambient and diffuse phong
+  vec3 ambient = ka * clr;
+  vec3 diffuse = clr * kd * dot(l, newNormal);
 
-  gl_FragColor = vec4(clr, 1.0);
+  gl_FragColor = vec4(ambient + diffuse, 1.0);
 }

@@ -63,7 +63,7 @@ function init() {
     },
     poleSize: {
       type: "f",
-      value: 0.01
+      value: 0.0
     }
   };
 
