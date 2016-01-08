@@ -4,14 +4,22 @@ uniform vec3 cameraPosition;
 */
 
 uniform vec3 lightPos;
+uniform float poleSize;
 
 varying vec3 pos;
+varying vec2 st;
+
+const float equator = 0.5;
+const float oceanOpacity = 0.6;
 
 float clampDot(vec3 a, vec3 b) {
   return clamp(dot(a, b), 0.0, 1.0);
 }
 
 void main () {
+  // calculate distance from poles
+  float poleDistance = smoothstep(equator - poleSize, 0.0, abs(equator - st.t));
+  poleDistance += (poleSize / 2.0) * snoise(vec4(pos, 0.0));
   // light intensity params
   float ka = 0.1;
   float kd = 1.0;
@@ -28,18 +36,21 @@ void main () {
   vec3 v = normalize(cameraPosition - pos);
   vec3 r = - reflect(l, newNormal);
 
-  // ocean color
+  // colors!
   vec3 ocean = vec3(0.0, 0.0, 1.0);
+  vec3 ice = vec3(1.0);
 
   // light colors
   vec3 aLight = ocean;
-  vec3 dLight = ocean;
+  vec3 dLight = (poleDistance < poleSize) ? ice : ocean;
   vec3 sLight = vec3(1.0);
+
+  float opacity = (poleDistance < poleSize) ? 1.0 : oceanOpacity;
 
   // calculate intensity
   vec3 phong = ka * aLight
     + kd * clampDot(l, newNormal) * dLight
     + ks * pow(clampDot(r, v), shinyness) * sLight;
 
-  gl_FragColor = vec4(phong, 0.6);
+  gl_FragColor = vec4(phong, opacity);
 }

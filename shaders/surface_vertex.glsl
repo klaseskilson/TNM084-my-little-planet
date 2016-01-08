@@ -9,9 +9,11 @@ attribute vec2 uv2;
 uniform float altitude;
 
 varying vec3 pos;
+varying vec2 st;
 varying float elevation;
 
 void main() {
+  st = uv;
   float intensity = 0.01;
 
   elevation = 0.0;

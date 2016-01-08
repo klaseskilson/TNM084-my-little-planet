@@ -61,6 +61,10 @@ function init() {
       type: "v3",
       value: lightPos
     },
+    poleSize: {
+      type: "f",
+      value: 0.01
+    }
   };
 
   var heightSegments = 256;
