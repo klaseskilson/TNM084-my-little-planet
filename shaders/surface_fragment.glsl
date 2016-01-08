@@ -21,20 +21,22 @@ void main () {
   sandColor *= 1.0 - (0.2 * offset);
   vec3 rockColor = vec3(0.3, 0.3, 0.3);
   rockColor *= 1.0 - (0.2 * offset);
+  vec3 bottomColor = rockColor;
   vec3 snowColor = vec3(1.0, 1.0, 1.0);
   snowColor *= 1.0 - (0.1 * offset);
 
   // interpolation distance between biomes
-  float itpr = 0.02;
+  float itpr = 0.1;
   // the biomes' altitude ranges
-  vec2 sandR = vec2(-2.0, 0.1); // * amplitude;
-  vec2 groundR = vec2(0.1, 0.6); // * amplitude;
-  vec2 rockR = vec2(0.6, 0.8); // * amplitude;
-  vec2 snowR = vec2(0.8, 2.0); // * amplitude;
+  vec2 sandR = vec2(-0.5, 0.1);
+  vec2 groundR = vec2(0.1, 0.6);
+  vec2 rockR = vec2(0.6, 0.8);
+  vec2 snowR = vec2(0.8, 2.0);
 
   // interpolate between biomes
-  float sand = smoothstep(sandR.x - itpr, sandR.x, elevation)
-        - smoothstep(sandR.y - itpr, sandR.y, elevation);
+  // the sand works a bit differently, as it goes from the bottom
+  // of the ocean to the beach.
+  float sand = smoothstep(sandR.x, sandR.y, elevation);
   float ground = smoothstep(groundR.x - itpr, groundR.x, elevation)
         - smoothstep(groundR.y - itpr, groundR.y, elevation);
   float rock = smoothstep(rockR.x - itpr, rockR.x, elevation)
@@ -43,7 +45,7 @@ void main () {
         - smoothstep(snowR.y - itpr, snowR.y, elevation);
 
   // apply interpolation, mix colors
-  vec3 clr = vec3(0.0);
+  vec3 clr = bottomColor;
   clr = mix(clr, sandColor, sand);
   clr = mix(clr, groundColor, ground);
   clr = mix(clr, rockColor, rock);
