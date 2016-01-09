@@ -4,6 +4,7 @@ var sharedUniforms,
     surface, surfaceMaterial, surfaceMesh,
     ocean, oceanMaterial, oceanMesh,
     sun, sunMaterial, sunMesh,
+    cloud, cloudMaterial, cloudMesh,
     atmosphere, atmosphereMaterial, atmosphereMesh;
 var shaders, start;
 
@@ -16,6 +17,8 @@ function loadShaders() {
     surfaceFragment: 'shaders/surface_fragment.glsl',
     oceanVertex: 'shaders/ocean_vertex.glsl',
     oceanFragment: 'shaders/ocean_fragment.glsl',
+    cloudVertex: 'shaders/cloud_vertex.glsl',
+    cloudFragment: 'shaders/cloud_fragment.glsl',
     atmosphereVertex: 'shaders/atmosphere_vertex.glsl',
     atmosphereFragment: 'shaders/atmosphere_fragment.glsl',
     classicNoise3D: 'shaders/noise/classicnoise3D.glsl',
@@ -71,7 +74,7 @@ function init() {
   var widthSegments = heightSegments;
   var radius = 300;
 
-  surface = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
+  surface = new THREE.SphereBufferGeometry(radius, widthSegments, heightSegments);
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   surfaceMaterial = new THREE.ShaderMaterial({
@@ -88,7 +91,7 @@ function init() {
   });
   surfaceMesh = new THREE.Mesh(surface, surfaceMaterial);
 
-  ocean = new THREE.SphereBufferGeometry(radius, widthSegments, heightSegments);
+  ocean = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
   // set up materials with shaders, and prepend the
   // shaders with the shader noise functions
   oceanMaterial = new THREE.ShaderMaterial({
@@ -110,13 +113,39 @@ function init() {
   });
   oceanMesh = new THREE.Mesh(ocean, oceanMaterial);
 
-  sun = new THREE.SphereGeometry(20, 10, 10);
-  sun.translate(lightPos.x, lightPos.y, lightPos.z);
-  //sun.translate(lightPos);
-  sunMaterial = new THREE.MeshBasicMaterial({
-    color: 0xffffff
+  cloud = new THREE.SphereBufferGeometry(radius + 50, widthSegments, heightSegments);
+  // set up materials with shaders, and prepend the
+  // shaders with the shader noise functions
+  cloudMaterial = new THREE.ShaderMaterial({
+    uniforms: _.extend({
+      cloudColor: {
+        type: "v3",
+        value: new THREE.Vector3(1, 1, 1)
+      },
+      cloudDensity: {
+        type: "f",
+        value: 0.8
+      },
+      cloudVariation: {
+        type: "f",
+        value: 0.02
+      },
+      cloudHeight: {
+        type: "f",
+        value: 4.0
+      },
+      cloudAnimation: {
+        type: "f",
+        value: 0.5
+      }
+    }, sharedUniforms),
+    vertexShader: shaders.simplexNoise4D + shaders.cloudVertex,
+    fragmentShader: shaders.simplexNoise4D + shaders.cloudFragment,
+    derivatives: true,
+    transparent: true,
+    //wireframe: true
   });
-  sunMesh = new THREE.Mesh(sun, sunMaterial);
+  cloudMesh = new THREE.Mesh(cloud, cloudMaterial);
 
   atmosphere = new THREE.SphereBufferGeometry(radius + 100, widthSegments, heightSegments);
   atmosphereMaterial = new THREE.ShaderMaterial({
@@ -136,10 +165,19 @@ function init() {
   });
   atmosphereMesh = new THREE.Mesh(atmosphere, atmosphereMaterial);
 
+  sun = new THREE.SphereBufferGeometry(20, 10, 10);
+  sun.translate(lightPos.x, lightPos.y, lightPos.z);
+  //sun.translate(lightPos);
+  sunMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffffff
+  });
+  sunMesh = new THREE.Mesh(sun, sunMaterial);
+
   scene.add(surfaceMesh);
   scene.add(oceanMesh);
-  scene.add(sunMesh);
+  scene.add(cloudMesh);
   scene.add(atmosphereMesh);
+  scene.add(sunMesh);
 
   // setup renderer and activate proper shader extensions
   renderer = new THREE.WebGLRenderer();
@@ -157,6 +195,8 @@ function init() {
 
 function animate() {
   sharedUniforms.time.value = (Date.now() - start) / 250;
+
+  cloudMesh.rotation.y += 0.0005;
 
   cameraControls.update();
   renderer.render(scene, camera);
