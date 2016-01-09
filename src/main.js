@@ -1,5 +1,5 @@
 /* main.js, start the client! */
-var camera, cameraControls, scene, renderer, stats;
+var camera, cameraControls, scene, renderer;
 var sharedUniforms,
     surface, surfaceMaterial, surfaceMesh,
     ocean, oceanMaterial, oceanMesh,
@@ -141,13 +141,6 @@ function init() {
   scene.add(sunMesh);
   scene.add(atmosphereMesh);
 
-  stats = new Stats();
-  stats.setMode(0); // 0: fps, 1: ms, 2: mb
-  // align top-left
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.left = '0px';
-  stats.domElement.style.top = '0px';
-
   // setup renderer and activate proper shader extensions
   renderer = new THREE.WebGLRenderer();
   //renderer.context.getExtension('OES_standard_derivatives');
@@ -155,7 +148,6 @@ function init() {
 
   cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
 
-  document.body.appendChild(stats.domElement);
   document.body.appendChild(renderer.domElement);
 
   // lets start animating!
@@ -164,13 +156,10 @@ function init() {
 }
 
 function animate() {
-  stats.begin();
-
   sharedUniforms.time.value = (Date.now() - start) / 250;
 
   cameraControls.update();
   renderer.render(scene, camera);
-  stats.end();
 
   requestAnimationFrame(animate);
 }
