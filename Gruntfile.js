@@ -31,7 +31,7 @@ module.exports = function(grunt) {
         tasks: ['build'],
       },
       gruntfile: {
-        files: ['Gruntfile.js'],
+        files: ['Gruntfile.js', 'libs/**/*.js'],
         tasks: ['build', 'concat:libs']
       }
     },
@@ -46,7 +46,6 @@ module.exports = function(grunt) {
       libs: {
         src: ['node_modules/three/three.js',
           'libs/OrbitControl.js',
-          'node_modules/stats.js/build/stats.min.js',
           'node_modules/lodash/index.js',
         ],
         dest: 'dist/libs.js'

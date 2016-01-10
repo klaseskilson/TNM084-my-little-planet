@@ -4,18 +4,20 @@ uniform vec3 cameraPosition;
 */
 
 uniform vec3 lightPos;
+uniform vec3 cloudColor;
+uniform float cloudDensity;
+uniform float cloudLimit;
 
 varying vec3 pos;
-
-const float oceanOpacity = 0.6;
+varying float offset;
 
 float clampDot(vec3 a, vec3 b) {
   return clamp(dot(a, b), 0.0, 1.0);
 }
 
-void main () {
+void main() {
   // light intensity params
-  float ka = 0.1;
+  float ka = 0.05;
   float kd = 1.0;
   float ks = 1.0;
   float shinyness = 20.0;
@@ -30,12 +32,8 @@ void main () {
   vec3 v = normalize(cameraPosition - pos);
   vec3 r = - reflect(l, newNormal);
 
-  // colors!
-  vec3 ocean = vec3(0.0, 0.0, 1.0);
-  vec3 ice = vec3(1.0);
-
   // light colors
-  vec3 dLight = ocean;
+  vec3 dLight = cloudColor;
   vec3 aLight = dLight;
   vec3 sLight = vec3(1.0);
 
@@ -44,5 +42,7 @@ void main () {
     + kd * clampDot(l, newNormal) * dLight
     + ks * pow(clampDot(r, v), shinyness) * sLight;
 
-  gl_FragColor = vec4(phong, oceanOpacity);
+  float isCloud = step(cloudLimit, offset);
+
+  gl_FragColor = vec4(phong, cloudDensity * isCloud);
 }

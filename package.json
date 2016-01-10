@@ -37,7 +37,6 @@
   "dependencies": {
     "lodash": "^3.10.1",
     "normalize.css": "^3.0.3",
-    "stats.js": "^1.0.0",
     "three": "^0.73.0"
   }
 }
