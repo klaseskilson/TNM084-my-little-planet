@@ -15,7 +15,7 @@ varying vec3 pos;
 varying float offset;
 
 void main() {
-  offset = cloudHeight * snoise(cloudVariation * vec4(position, time * cloudAnimation));
+  offset = snoise(cloudVariation * vec4(position, time * cloudAnimation));
   pos = position + normal * offset * cloudHeight;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 }
