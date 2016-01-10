@@ -192,7 +192,9 @@ function init() {
   cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
   cameraControls.zoomSpeed = 0.1;
 
-  document.body.appendChild(renderer.domElement);
+  var loader = document.getElementById('loader');
+  loader.parentNode.removeChild(loader);
+  document.getElementById('canvasContainer').appendChild(renderer.domElement);
 
   // lets start animating!
   start = Date.now();

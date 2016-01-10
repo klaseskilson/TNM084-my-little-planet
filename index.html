@@ -10,6 +10,52 @@
   <script src="dist/my-little-planet.js" defer></script>
 </head>
 <body>
+  <div id="loader"><p>loading...</p></div>
+  <div id="canvasContainer"></div>
+  <section id="controls">
+    <header class="group">
+      <h1>My little planet</h1>
+    </header>
+    <section class="group">
+      <h2>Weather</h2>
 
+      <div class="input">
+        <label class="key">Avg. temperature</label>
+        <input type="number" class="single" value="18">
+      </div>
+      <div class="input">
+        <label class="key">Humidity</label>
+        <input type="number" class="single" value="40">
+      </div>
+    </section>
+    <section class="group">
+      <h2>Planet</h2>
+
+      <div class="input">
+        <label class="key">Mountain alt.</label>
+        <input type="number" class="single" value="40">
+      </div>
+      <div class="input">
+        <label class="key">Pole size</label>
+        <input type="number" class="single" value="0">
+      </div>
+      <div class="input">
+        <label class="key">Sea level</label>
+        <input type="number" class="single" value="0">
+      </div>
+    </section>
+    <section class="group">
+      <h2>Space!</h2>
+
+      <div class="input">
+        <label class="key">Atmosphere color</label>
+        <input type="text" class="single" value="#fff">
+      </div>
+      <div class="input">
+        <label class="key">Atmosphere alt.</label>
+        <input type="number" class="single" value="100">
+      </div>
+    </section>
+  </section>
 </body>
 </html>

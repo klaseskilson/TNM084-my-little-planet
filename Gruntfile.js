@@ -2,6 +2,9 @@ module.exports = function(grunt) {
   // get rid of annoying grunt task loading
   require('load-grunt-tasks')(grunt);
 
+  var banner = '/*! <%= pkg.name %>\n(c) <%= pkg.author %> 2016\n' +
+    'Built <%= grunt.template.today("yyyy-mm-dd HH:MM") %>\n<%= pkg.homepage%> */\n';
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     'http-server': {
@@ -27,7 +30,7 @@ module.exports = function(grunt) {
         options: {
           interrupt: true,
         },
-        files: ['src/**/*.js', '**.css', 'index.html'],
+        files: ['src/**/*.js', 'stylesheets/**/*.styl', 'index.html'],
         tasks: ['build'],
       },
       gruntfile: {
@@ -55,18 +58,20 @@ module.exports = function(grunt) {
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
-    concat_css: {
-      options: {},
-      all: {
-        src: ['node_modules/normalize.css/normalize.css', 'stylesheets/**/*.css'],
-        dest: 'dist/<%= pkg.name %>.css'
+    stylus: {
+      compile: {
+        options: {
+          banner: banner
+        },
+        files: {
+          'dist/<%= pkg.name %>.css': ['node_modules/normalize.css/normalize.css', 'stylesheets/**/*.styl']
+        }
       }
     },
     uglify: {
       options: {
         // the banner is inserted at the top of the output
-        banner: '/*! <%= pkg.name %>\n(c) <%= pkg.author %> 2016\n' +
-          'Built <%= grunt.template.today("yyyy-mm-dd hh:mm") %>\n<%= pkg.homepage%> */\n'
+        banner: banner
       },
       dist: {
         files: {
@@ -90,7 +95,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('build', ['jshint', 'concat:client', 'concat_css']);
+  grunt.registerTask('build', ['jshint', 'concat:client', 'stylus']);
   grunt.registerTask('dev', ['build', 'concat:libs', 'http-server', 'watch']);
   grunt.registerTask('deploy', ['build', 'concat:libs', 'uglify', 'cacheBust']);
   grunt.registerTask('default', ['dev']);
