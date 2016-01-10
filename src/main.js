@@ -109,6 +109,7 @@ function init() {
     fragmentShader: shaders.simplexNoise4D + shaders.oceanFragment,
     derivatives: true,
     transparent: true,
+    blending: THREE.AdditiveBlending,
     //wireframe: true
   });
   oceanMesh = new THREE.Mesh(ocean, oceanMaterial);
@@ -128,16 +129,20 @@ function init() {
       },
       cloudVariation: {
         type: "f",
-        value: 0.02
+        value: 0.013
       },
       cloudHeight: {
         type: "f",
-        value: 4.0
+        value: 16.0
+      },
+      cloudLimit: {
+        type: "f",
+        value: 0.0
       },
       cloudAnimation: {
         type: "f",
         value: 0.5
-      }
+      },
     }, sharedUniforms),
     vertexShader: shaders.simplexNoise4D + shaders.cloudVertex,
     fragmentShader: shaders.simplexNoise4D + shaders.cloudFragment,
@@ -185,6 +190,7 @@ function init() {
   onWindowResize();
 
   cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
+  cameraControls.zoomSpeed = 0.1;
 
   document.body.appendChild(renderer.domElement);
 
@@ -196,7 +202,7 @@ function init() {
 function animate() {
   sharedUniforms.time.value = (Date.now() - start) / 250;
 
-  cloudMesh.rotation.y += 0.0005;
+  //cloudMesh.rotation.y += 0.0005;
 
   cameraControls.update();
   renderer.render(scene, camera);

@@ -31,7 +31,7 @@ module.exports = function(grunt) {
         tasks: ['build'],
       },
       gruntfile: {
-        files: ['Gruntfile.js'],
+        files: ['Gruntfile.js', 'libs/**/*.js'],
         tasks: ['build', 'concat:libs']
       }
     },
