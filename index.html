@@ -16,12 +16,22 @@
     <header class="group">
       <h1>My little planet</h1>
     </header>
+    <div class="group">
+      <p>
+        Modify the parameters below to create your own planet. Hold left
+        mouse button to rotate, right mouse to pan and scroll wheel to zoom.
+      </p>
+    </div>
     <section class="group">
       <h2>Weather</h2>
 
       <div class="input">
         <label class="key">Avg. temperature</label>
         <input type="number" class="single" value="18">
+      </div>
+      <div class="input">
+        <label class="key">Cloud density</label>
+        <input type="number" class="single" value="0.8" min="0" max="1" step="0.01" data-key="cloudDensity">
       </div>
       <div class="input">
         <label class="key">Humidity</label>
@@ -33,15 +43,15 @@
 
       <div class="input">
         <label class="key">Mountain alt.</label>
-        <input type="number" class="single" value="40">
+        <input type="number" class="single" value="40" data-key="altitude">
       </div>
       <div class="input">
         <label class="key">Pole size</label>
-        <input type="number" class="single" value="0">
+        <input type="number" class="single" value="0" min="0" max="0.5" step="0.01" data-key="poleSize">
       </div>
       <div class="input">
         <label class="key">Sea level</label>
-        <input type="number" class="single" value="0">
+        <input type="number" class="single" value="0" data-key="poop">
       </div>
     </section>
     <section class="group">
@@ -49,7 +59,7 @@
 
       <div class="input">
         <label class="key">Atmosphere color</label>
-        <input type="text" class="single" value="#fff">
+        <input type="text" class="single" value="fff">
       </div>
       <div class="input">
         <label class="key">Atmosphere alt.</label>

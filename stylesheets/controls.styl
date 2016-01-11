@@ -1,9 +1,11 @@
 /* controls */
 // variables
 padding = 15px
-gray = #F1F0EB
-blue = #385573
-red = #FF704A
+beige = #E8DDCB
+green = #036564
+blue = #033649
+dark_blue = #031634
+red = #CDB380
 
 #controls
   z-index 2
@@ -19,11 +21,15 @@ red = #FF704A
     height auto
 
   header
-    background red
+    background dark_blue
     border-bottom none
 
+p
+  margin 0
+  padding 0
+
 .group
-  border-bottom 1px solid gray
+  border-bottom 1px solid beige
   padding padding
   margin 0 0 padding
 
@@ -39,7 +45,7 @@ red = #FF704A
   input.single
     background rgba(white, 0.1)
     border none
-    color gray
+    color beige
     font-size 14px
     padding (padding/3)
     text-align right

@@ -83,6 +83,10 @@ function init() {
         type: "f",
         value: 40.0
       },
+      defaultAltitude: {
+        type: "f",
+        value: 40.0
+      },
     }, sharedUniforms),
     vertexShader: shaders.simplexNoise3D + shaders.surfaceVertex,
     fragmentShader: shaders.classicNoise3D + shaders.surfaceFragment,
@@ -191,11 +195,19 @@ function init() {
 
   cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
   cameraControls.zoomSpeed = 0.1;
+  cameraControls.enableKeys = false;
 
   var loader = document.getElementById('loader');
   loader.parentNode.removeChild(loader);
   document.getElementById('canvasContainer').appendChild(renderer.domElement);
 
+  // start event listeners for the controls, inform them of our uniforms
+  var uniforms = [surfaceMaterial.uniforms,
+    sharedUniforms,
+    cloudMaterial.uniforms
+  ];
+  var inputCtrl = new InputControl(document.getElementById("controls"), uniforms);
+  inputCtrl.startGeneralListeners();
   // lets start animating!
   start = Date.now();
   animate();
