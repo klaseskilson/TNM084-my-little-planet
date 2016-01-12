@@ -8,6 +8,7 @@ uniform vec3 lightPos;
 uniform float poleSize;
 uniform float altitude;
 uniform float defaultAltitude;
+uniform float oceanLevel;
 
 varying vec3 pos;
 varying float elevation;
@@ -42,9 +43,9 @@ void main () {
   float itpr = 0.1 * defaultAltitude;
   // the biomes' altitude ranges
   vec2 sandR = vec2(-0.5, 0.1) * defaultAltitude;
-  vec2 groundR = vec2(0.1, 0.6) * defaultAltitude;
-  vec2 rockR = vec2(0.6, 0.8) * defaultAltitude;
-  vec2 snowR = vec2(0.8, 10.0) * defaultAltitude;
+  vec2 groundR = vec2(0.1, 0.6) * defaultAltitude + oceanLevel;
+  vec2 rockR = vec2(0.6, 0.8) * defaultAltitude + oceanLevel;
+  vec2 snowR = vec2(0.8, 10.0) * defaultAltitude + oceanLevel;
 
   // interpolate between biomes
   // the sand works a bit differently, as it goes from the bottom

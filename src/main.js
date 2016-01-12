@@ -67,7 +67,11 @@ function init() {
     poleSize: {
       type: "f",
       value: 0.0
-    }
+    },
+    oceanLevel: {
+      type: "f",
+      value: 0
+    },
   };
 
   var heightSegments = 256;
@@ -156,16 +160,20 @@ function init() {
   });
   cloudMesh = new THREE.Mesh(cloud, cloudMaterial);
 
-  atmosphere = new THREE.SphereBufferGeometry(radius + 100, widthSegments, heightSegments);
+  atmosphere = new THREE.SphereBufferGeometry(radius, widthSegments, heightSegments);
   atmosphereMaterial = new THREE.ShaderMaterial({
     uniforms: _.extend({
-      color: {
-        type: "v3",
-        value: new THREE.Vector3(1, 1, 1)
+      atmosphereColor: {
+        type: "c",
+        value: new THREE.Color(0xDDDD00)
       },
       opacity: {
         type: "f",
         value: 0.2
+      },
+      atmosphereAltitude: {
+        type: "f",
+        value: 100
       },
     }, sharedUniforms),
     vertexShader: shaders.atmosphereVertex,
@@ -204,10 +212,13 @@ function init() {
   // start event listeners for the controls, inform them of our uniforms
   var uniforms = [surfaceMaterial.uniforms,
     sharedUniforms,
-    cloudMaterial.uniforms
+    cloudMaterial.uniforms,
+    oceanMaterial.uniforms,
+    atmosphereMaterial.uniforms
   ];
   var inputCtrl = new InputControl(document.getElementById("controls"), uniforms);
   inputCtrl.startGeneralListeners();
+  inputCtrl.startSpecificListeners();
   // lets start animating!
   start = Date.now();
   animate();

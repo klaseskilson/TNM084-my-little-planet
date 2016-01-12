@@ -26,8 +26,8 @@
       <h2>Weather</h2>
 
       <div class="input">
-        <label class="key">Avg. temperature</label>
-        <input type="number" class="single" value="18">
+        <label class="key" title="Average temperature">Avg. temperature</label>
+        <input type="number" class="single" value="18" step="0.1" id="temp">
       </div>
       <div class="input">
         <label class="key">Cloud density</label>
@@ -42,7 +42,7 @@
       <h2>Planet</h2>
 
       <div class="input">
-        <label class="key">Mountain alt.</label>
+        <label class="key" title="Mountain altitude">Mountain alt.</label>
         <input type="number" class="single" value="40" data-key="altitude">
       </div>
       <div class="input">
@@ -51,7 +51,7 @@
       </div>
       <div class="input">
         <label class="key">Sea level</label>
-        <input type="number" class="single" value="0" data-key="poop">
+        <input type="number" class="single" value="0" step="0.1" data-key="oceanLevel">
       </div>
     </section>
     <section class="group">
@@ -59,11 +59,12 @@
 
       <div class="input">
         <label class="key">Atmosphere color</label>
-        <input type="text" class="single" value="fff">
+        <input type="text" class="single" value="dddd00" placeholder="hex value" id="atmosphereColor"
+          style="background: #dddd00; color: #111;">
       </div>
       <div class="input">
         <label class="key">Atmosphere alt.</label>
-        <input type="number" class="single" value="100">
+        <input type="number" class="single" value="100" data-key="atmosphereAltitude">
       </div>
     </section>
   </section>
