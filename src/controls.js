@@ -86,6 +86,20 @@ _.extend(InputControl.prototype, {
     });
   },
 
+  setupToggles: function () {
+    var self = this;
+    var elems = self.domElement.querySelectorAll('.toggle');
+    _.each(elems, function (elem) {
+      var target = elem.attributes['data-target'].value;
+      var hideable = document.getElementById(target);
+      elem.addEventListener('click', function () {
+        var text = elem.innerHTML === 'hide' ? 'show' : 'hide';
+        elem.innerHTML = text;
+        hideable.classList.toggle('hidden');
+      });
+    });
+  },
+
   /**
    * common function to use for updating color uniforms
    * @param key               the uniform key

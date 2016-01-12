@@ -219,6 +219,8 @@ function init() {
   var inputCtrl = new InputControl(document.getElementById("controls"), uniforms);
   inputCtrl.startGeneralListeners();
   inputCtrl.startSpecificListeners();
+  inputCtrl.setupToggles();
+
   // lets start animating!
   start = Date.now();
   animate();
