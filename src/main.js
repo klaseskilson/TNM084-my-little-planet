@@ -110,7 +110,7 @@ function init() {
       },
       intensity: {
         type: "f",
-        value: 0.1
+        value: 0.15
       },
     }, sharedUniforms),
     vertexShader: shaders.simplexNoise4D + shaders.oceanVertex,
@@ -128,8 +128,8 @@ function init() {
   cloudMaterial = new THREE.ShaderMaterial({
     uniforms: _.extend({
       cloudColor: {
-        type: "v3",
-        value: new THREE.Vector3(1, 1, 1)
+        type: "c",
+        value: new THREE.Color(0xffffff)
       },
       cloudDensity: {
         type: "f",
@@ -137,7 +137,7 @@ function init() {
       },
       cloudVariation: {
         type: "f",
-        value: 0.013
+        value: 0.007
       },
       cloudHeight: {
         type: "f",
@@ -145,7 +145,7 @@ function init() {
       },
       cloudLimit: {
         type: "f",
-        value: 0.0
+        value: 0.25
       },
       cloudAnimation: {
         type: "f",
@@ -167,7 +167,7 @@ function init() {
         type: "c",
         value: new THREE.Color(0xDDDD00)
       },
-      opacity: {
+      atmosphereOpacity: {
         type: "f",
         value: 0.2
       },

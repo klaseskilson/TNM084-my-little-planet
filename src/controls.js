@@ -39,6 +39,7 @@ _.extend(InputControl.prototype, {
     // and append event listeners to them
     _.each(self.domElement.querySelectorAll('input[data-key][type=number]'), function (element) {
       var key = element.attributes['data-key'].value;
+      element.value = self.getUniform(key);
       element.addEventListener('input', eventListener(key, parseFloat));
     });
   },
@@ -54,6 +55,9 @@ _.extend(InputControl.prototype, {
     var listeners = [{
       selector: '#atmosphereColor',
       callback: self.colorCallback('atmosphereColor')
+    }, {
+      selector: '#cloudColor',
+      callback: self.colorCallback('cloudColor')
     }, {
       selector: '#temperature',
       callback: function (event) {

@@ -1,6 +1,6 @@
 uniform vec3 lightPos;
 uniform vec3 atmosphereColor;
-uniform float opacity;
+uniform float atmosphereOpacity;
 
 varying vec3 norm;
 varying vec3 pos;
@@ -29,5 +29,5 @@ void main() {
     + kd * clampDot(l, norm) * dLight
     + ks * pow(clampDot(r, v), shinyness) * sLight;
 
-  gl_FragColor = vec4(phong, opacity);
+  gl_FragColor = vec4(phong, atmosphereOpacity);
 }
