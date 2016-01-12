@@ -22,7 +22,7 @@ _.extend(InputControl.prototype, {
      * @param key       name of the uniform
      * @param filter    optional filter to apply to the values
      * @param callback  optional callback to overide the default callback
-     * @returns {*|generalCallback}
+     * @returns {callback|generalCallback}
      */
     var eventListener = function eventListener(key, filter, callback) {
       var uniform = self.uniforms[key] || {};
@@ -48,6 +48,7 @@ _.extend(InputControl.prototype, {
    */
   startSpecificListeners: function startSpecificListeners() {
     var self = this;
+    var temperature = 18;
 
     // all the other event listeners
     _.each([{
@@ -56,9 +57,11 @@ _.extend(InputControl.prototype, {
     }, {
       selector: '#temp',
       callback: function (event) {
-        var defaultTemperature = 18;
         var value = parseFloat(event.target.value);
-        var oceanLevel = Math.round((value - defaultTemperature) * 10) / 10;
+        var oceanLevel = self.getUniform('oceanLevel');
+        var diff = value - temperature;
+        oceanLevel = Math.round((oceanLevel + diff) * 10) / 10;
+        temperature = value;
         self.setUniform('oceanLevel', oceanLevel);
       }
     }], function (uniform) {
