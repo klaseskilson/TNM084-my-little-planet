@@ -3,12 +3,117 @@
 <head>
   <meta charset="utf-8">
   <title>My Little Planet</title>
-  <link rel="stylesheet" href="dist/my-little-planet.1e9c0f3b.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="dist/my-little-planet.22a71b21.css">
 
   <!-- js -->
-  <script src="dist/libs.632ce0de.js" defer></script>
-  <script src="dist/my-little-planet.a091c560.js" defer></script>
+  <script src="dist/libs.a977dc5e.js" defer></script>
+  <script src="dist/my-little-planet.038537d0.js" defer></script>
 </head>
 <body>
+  <div id="loader"><p>loading...</p></div>
+  <div id="canvasContainer"></div>
+  <section id="controls">
+    <header class="group">
+      <h1>
+        My little planet
+        <a href="#" class="toggle" data-target="controls">hide</a>
+      </h1>
+    </header>
+    <div class="group">
+      <p>
+        Controls: hold left mouse button to rotate, right mouse to pan and scroll wheel to zoom.
+      </p>
+      <p>
+        Modify the parameters below to create your own planet.
+      </p>
+    </div>
+    <section class="group">
+      <h2>Weather</h2>
+
+      <div class="input">
+        <label class="key" title="Average temperature">Avg. temperature</label>
+        <input type="number" class="single" value="18" step="0.1" id="temperature" value="percent">
+      </div>
+      <div class="input">
+        <label class="key">Humidity %</label>
+        <input type="number" class="single" value="80" min="0" max="100" id="humidity">
+      </div>
+    </section>
+    <section class="group">
+      <h2>Planet</h2>
+
+      <div class="input">
+        <label class="key" title="Mountain altitude">Mountain alt.</label>
+        <input type="number" class="single" value="40" data-key="altitude">
+      </div>
+      <div class="input">
+        <label class="key">Pole size</label>
+        <input type="number" class="single" value="0" min="0" max="0.5" step="0.01" data-key="poleSize">
+      </div>
+      <div class="input">
+        <label class="key">Sea level</label>
+        <input type="number" class="single" value="0" step="0.1" data-key="oceanLevel">
+      </div>
+    </section>
+    <section class="group">
+      <h2>Space!</h2>
+
+      <div class="input">
+        <label class="key">Atmosphere color</label>
+        <input type="text" class="single" value="dddd00" placeholder="hex value" id="atmosphereColor"
+          style="background: #dddd00; color: #111;">
+      </div>
+      <div class="input">
+        <label class="key">Atmosphere alt.</label>
+        <input type="number" class="single" value="100" data-key="atmosphereAltitude">
+      </div>
+    </section>
+
+    <section class="group">
+      <h2>Advanced <a href="#" class="toggle" data-target="adv">show</a></h2>
+
+      <div class="hidden" id="adv">
+        <div class="input">
+          <label class="key" title="Atmosphere opacity">Atmosphere opac.</label>
+          <input type="number" class="single" step="0.01" min="0" max="1" data-key="atmosphereOpacity">
+        </div>
+        <div class="input">
+          <label class="key">Cloud animation</label>
+          <input type="number" class="single" value="0.5" step="0.1" data-key="cloudAnimation">
+        </div>
+        <div class="input">
+          <label class="key">Cloud color</label>
+          <input type="text" class="single" value="ffffff" placeholder="hex value" id="cloudColor"
+                 style="background: #ffffff; color: #111;">
+        </div>
+        <div class="input">
+          <label class="key">Cloud density</label>
+          <input type="number" class="single" value="0.8" min="0" max="1" step="0.01" data-key="cloudDensity">
+        </div>
+        <div class="input">
+          <label class="key">Cloud height</label>
+          <input type="number" class="single" value="16" step="0.1" min="0" data-key="cloudHeight">
+        </div>
+        <div class="input">
+          <label class="key">Cloud limit</label>
+          <input type="number" class="single" value="0.25" step="0.01" min="-1" max="1" data-key="cloudLimit">
+        </div>
+        <div class="input">
+          <label class="key">Cloud variation</label>
+          <input type="number" class="single" value="0.007" step="0.001" data-key="cloudVariation">
+        </div>
+        <div class="input">
+          <label class="key">Ocean roughness</label>
+          <input type="number" class="single" step="0.01" min="0" data-key="roughness">
+        </div>
+        <div class="input">
+          <label class="key">Ocean intensity</label>
+          <input type="number" class="single" step="0.01" min="0" data-key="intensity">
+        </div>
+      </div>
+    </section>
+  </section>
+>>>>>>> master
 </body>
 </html>

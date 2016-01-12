@@ -20,7 +20,7 @@ void main() {
   for (float i = 1.0; i < 10.0; i += 1.0) {
     elevation += (1.0 / i) * snoise((intensity / i) * position);
   }
-
-  pos = position + normal * elevation * altitude;
+  elevation *= altitude;
+  pos = position + normal * elevation;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 }

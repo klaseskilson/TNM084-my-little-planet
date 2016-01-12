@@ -1,0 +1,80 @@
+/* controls */
+// variables
+padding = 15px
+beige = #E8DDCB
+green = #036564
+blue = #033649
+dark_blue = #031634
+red = #CDB380
+
+#controls
+  z-index 2
+  position absolute
+  top 0
+  left 0
+  width 100%
+  height 100%
+  max-width 300px
+  background rgba(#111, .5)
+  overflow-y auto
+
+  &.hidden
+    height unquote('calc(1.5 * 1rem + ' + 2 * padding + ')')
+    display block
+    overflow hidden
+
+  header
+    background dark_blue
+    border-bottom none
+
+.hidden
+  display none
+
+.toggle
+  float right
+  text-decoration none
+
+p
+  margin 0
+  padding 0
+
+  + p
+    margin-bottom padding
+
+.group
+  border-bottom 1px solid beige
+  padding padding
+  margin 0 /*0 padding*/
+
+.input
+  margin (padding/3) 0
+  display flex
+
+  .key
+    font-size 1rem
+    line-height 26px
+    flex 2
+
+  input.single
+    background rgba(white, 0.1)
+    border none
+    color beige
+    font-size 1rem
+    padding (padding/3)
+    text-align right
+    flex 1
+
+h1, h2, .group .key
+  margin 0
+  padding 0
+  font-weight normal
+  text-transform uppercase
+  letter-spacing 0.05em
+
+h1
+  font-size 1.3rem
+
+h2
+  font-size 1.1rem
+
+

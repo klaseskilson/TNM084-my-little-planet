@@ -67,7 +67,11 @@ function init() {
     poleSize: {
       type: "f",
       value: 0.0
-    }
+    },
+    oceanLevel: {
+      type: "f",
+      value: 0
+    },
   };
 
   var heightSegments = 512;
@@ -80,6 +84,10 @@ function init() {
   surfaceMaterial = new THREE.ShaderMaterial({
     uniforms: _.extend({
       altitude: {
+        type: "f",
+        value: 40.0
+      },
+      defaultAltitude: {
         type: "f",
         value: 40.0
       },
@@ -102,7 +110,7 @@ function init() {
       },
       intensity: {
         type: "f",
-        value: 0.1
+        value: 0.15
       },
     }, sharedUniforms),
     vertexShader: shaders.simplexNoise4D + shaders.oceanVertex,
@@ -120,8 +128,8 @@ function init() {
   cloudMaterial = new THREE.ShaderMaterial({
     uniforms: _.extend({
       cloudColor: {
-        type: "v3",
-        value: new THREE.Vector3(1, 1, 1)
+        type: "c",
+        value: new THREE.Color(0xffffff)
       },
       cloudDensity: {
         type: "f",
@@ -129,7 +137,7 @@ function init() {
       },
       cloudVariation: {
         type: "f",
-        value: 0.013
+        value: 0.007
       },
       cloudHeight: {
         type: "f",
@@ -137,7 +145,7 @@ function init() {
       },
       cloudLimit: {
         type: "f",
-        value: 0.0
+        value: 0.25
       },
       cloudAnimation: {
         type: "f",
@@ -152,16 +160,20 @@ function init() {
   });
   cloudMesh = new THREE.Mesh(cloud, cloudMaterial);
 
-  atmosphere = new THREE.SphereBufferGeometry(radius + 100, widthSegments, heightSegments);
+  atmosphere = new THREE.SphereBufferGeometry(radius, widthSegments, heightSegments);
   atmosphereMaterial = new THREE.ShaderMaterial({
     uniforms: _.extend({
-      color: {
-        type: "v3",
-        value: new THREE.Vector3(1, 1, 1)
+      atmosphereColor: {
+        type: "c",
+        value: new THREE.Color(0xDDDD00)
       },
-      opacity: {
+      atmosphereOpacity: {
         type: "f",
         value: 0.2
+      },
+      atmosphereAltitude: {
+        type: "f",
+        value: 100
       },
     }, sharedUniforms),
     vertexShader: shaders.atmosphereVertex,
@@ -191,8 +203,23 @@ function init() {
 
   cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
   cameraControls.zoomSpeed = 0.1;
+  cameraControls.enableKeys = false;
 
-  document.body.appendChild(renderer.domElement);
+  var loader = document.getElementById('loader');
+  loader.parentNode.removeChild(loader);
+  document.getElementById('canvasContainer').appendChild(renderer.domElement);
+
+  // start event listeners for the controls, inform them of our uniforms
+  var uniforms = [surfaceMaterial.uniforms,
+    sharedUniforms,
+    cloudMaterial.uniforms,
+    oceanMaterial.uniforms,
+    atmosphereMaterial.uniforms
+  ];
+  var inputCtrl = new InputControl(document.getElementById("controls"), uniforms);
+  inputCtrl.startGeneralListeners();
+  inputCtrl.startSpecificListeners();
+  inputCtrl.setupToggles();
 
   // lets start animating!
   start = Date.now();
