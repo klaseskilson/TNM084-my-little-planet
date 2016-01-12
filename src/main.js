@@ -91,6 +91,14 @@ function init() {
         type: "f",
         value: 40.0
       },
+      noiseOffset: {
+        type: "f",
+        value: 0.0
+      },
+      surfaceIntensity: {
+        type: "f",
+        value: 0.01
+      },
     }, sharedUniforms),
     vertexShader: shaders.simplexNoise3D + shaders.surfaceVertex,
     fragmentShader: shaders.classicNoise3D + shaders.surfaceFragment,

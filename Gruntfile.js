@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   var banner = '/*! <%= pkg.name %>\n(c) <%= pkg.author %> 2016\n' +
-    'Built <%= grunt.template.today("yyyy-mm-dd HH:MM") %>\n<%= pkg.homepage%> */\n';
+    'Built <%= grunt.template.today("yyyy-mm-dd") %>\n<%= pkg.homepage%> */\n';
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
