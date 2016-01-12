@@ -78,11 +78,11 @@ _.extend(InputControl.prototype, {
 
     // all the other event listeners
     _.each(listeners, function (listener) {
-      var elem = self.domElement.querySelector(listener.selector);
-      if (elem) {
+      var elems = self.domElement.querySelectorAll(listener.selector);
+      _.each(elems, function (elem) {
         var eventType = listener.eventType || 'input';
         elem.addEventListener(eventType, listener.callback);
-      }
+      });
     });
   },
 
