@@ -27,15 +27,15 @@
 
       <div class="input">
         <label class="key" title="Average temperature">Avg. temperature</label>
-        <input type="number" class="single" value="18" step="0.1" id="temp">
+        <input type="number" class="single" value="18" step="0.1" id="temperature" value="percent">
       </div>
       <div class="input">
         <label class="key">Cloud density</label>
         <input type="number" class="single" value="0.8" min="0" max="1" step="0.01" data-key="cloudDensity">
       </div>
       <div class="input">
-        <label class="key">Humidity</label>
-        <input type="number" class="single" value="40">
+        <label class="key">Humidity %</label>
+        <input type="number" class="single" value="40" min="0" max="100" id="humidity">
       </div>
     </section>
     <section class="group">

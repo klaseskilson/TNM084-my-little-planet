@@ -49,20 +49,31 @@ _.extend(InputControl.prototype, {
   startSpecificListeners: function startSpecificListeners() {
     var self = this;
     var temperature = 18;
+    var humidity = 0.4;
 
     // all the other event listeners
     _.each([{
       selector: '#atmosphereColor',
       callback: self.colorCallback('atmosphereColor')
     }, {
-      selector: '#temp',
+      selector: '#temperature',
       callback: function (event) {
+        // make ocean level depend on average temperature
         var value = parseFloat(event.target.value);
-        var oceanLevel = self.getUniform('oceanLevel');
         var diff = value - temperature;
-        oceanLevel = Math.round((oceanLevel + diff) * 10) / 10;
+        self.applyDiff('oceanLevel', diff);
         temperature = value;
-        self.setUniform('oceanLevel', oceanLevel);
+      }
+    }, {
+      selector: '#humidity',
+      callback: function (event) {
+        var percentage = parseFloat(event.target.value) / 100;
+        var diff = percentage - humidity;
+        // apply diff, 3 decimals, clamp between [0,1]
+        self.applyDiff('cloudDensity', diff, function (v) {
+          return self.clamp(self.floatPrecision(v, 3), 0, 1);
+        });
+        humidity = percentage;
       }
     }], function (uniform) {
       var elem = self.domElement.querySelector(uniform.selector);
@@ -111,7 +122,6 @@ _.extend(InputControl.prototype, {
    * @param stringValue if the value has a specific string version
    */
   setUniform: function (key, value, method, stringValue) {
-    console.log(arguments);
     var self = this;
     // check if method is provided
     if (method) {
@@ -135,5 +145,41 @@ _.extend(InputControl.prototype, {
    */
   getUniform: function (key) {
     return this.uniforms[key] && this.uniforms[key].value;
+  },
+
+  /**
+   * apply diff to uniform value
+   * @param key     uniform key
+   * @param diff    the diff to apply
+   * @param filter  optional filter function, accepts 1 param, defaults to `floatPrecision`
+   */
+  applyDiff: function (key, diff, filter) {
+    var self = this;
+    filter = filter || self.floatPrecision;
+    var value = self.getUniform(key);
+    value += diff;
+    self.setUniform(key, filter.call(self, value));
+  },
+
+  /**
+   * set decimal precision to number
+   * @param f     the number
+   * @param n     optional, the number of decimals, defaults 1
+   * @returns {number}
+   */
+  floatPrecision: function (f, n) {
+    n = n || 1;
+    return Math.round(f * Math.pow(10, n)) / Math.pow(10, n);
+  },
+
+  /**
+   * clamp value
+   * @param value
+   * @param min
+   * @param max
+   * @returns {number}
+   */
+  clamp: function (value, min, max) {
+    return Math.min(Math.max(value, min), max);
   }
 });
