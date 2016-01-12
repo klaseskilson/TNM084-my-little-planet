@@ -51,8 +51,7 @@ _.extend(InputControl.prototype, {
     var temperature = 18;
     var humidity = 0.4;
 
-    // all the other event listeners
-    _.each([{
+    var listeners = [{
       selector: '#atmosphereColor',
       callback: self.colorCallback('atmosphereColor')
     }, {
@@ -75,11 +74,14 @@ _.extend(InputControl.prototype, {
         });
         humidity = percentage;
       }
-    }], function (uniform) {
-      var elem = self.domElement.querySelector(uniform.selector);
+    }];
+
+    // all the other event listeners
+    _.each(listeners, function (listener) {
+      var elem = self.domElement.querySelector(listener.selector);
       if (elem) {
-        var eventType = uniform.eventType || 'input';
-        elem.addEventListener(eventType, uniform.callback);
+        var eventType = listener.eventType || 'input';
+        elem.addEventListener(eventType, listener.callback);
       }
     });
   },
