@@ -56,7 +56,7 @@ function init() {
   scene.add(light);
 
   sharedUniforms = {
-    time: { // time is a float initialized to 0
+    time: {
       type: "f",
       value: 0.0
     },
@@ -74,7 +74,7 @@ function init() {
     },
   };
 
-  var heightSegments = 256;
+  var heightSegments = (window.innerWidth <= 800) ? 128 : 256;
   var widthSegments = heightSegments;
   var radius = 300;
 
