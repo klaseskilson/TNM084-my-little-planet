@@ -32,12 +32,13 @@ _.extend(InputControl.prototype, {
           filter = filter || _.identity;
           var val = filter.call(null, event.target.value);
           console.info('changed', key, 'to', val);
+          self.setInput(key, val);
           uniform.value = val;
         };
     };
     // select all number inputs with given keys
     // and append event listeners to them
-    _.each(self.domElement.querySelectorAll('input[data-key][type=number]'), function (element) {
+    _.each(self.domElement.querySelectorAll('input[data-key]'), function (element) {
       var key = element.attributes['data-key'].value;
       element.value = self.getUniform(key);
       element.addEventListener('input', eventListener(key, parseFloat));
@@ -66,6 +67,7 @@ _.extend(InputControl.prototype, {
         var diff = value - temperature;
         self.applyDiff('oceanLevel', diff);
         temperature = value;
+        self.setInput(null, event.target.value, '#temperature');
       }
     }, {
       selector: '#humidity',
@@ -77,6 +79,7 @@ _.extend(InputControl.prototype, {
           return self.clamp(self.floatPrecision(v, 3), 0, 1);
         });
         humidity = percentage;
+        self.setInput(null, event.target.value, '#humidity');
       }
     }];
 
@@ -152,10 +155,7 @@ _.extend(InputControl.prototype, {
     // use provided stringValue
     var inputValue = stringValue || value;
     // set all the values with this key
-    var elems = self.domElement.querySelectorAll('[data-key=' + key + ']');
-    _.each(elems, function (elem) {
-      elem.value = inputValue;
-    });
+    self.setInput(key, inputValue);
   },
 
   /**
@@ -165,6 +165,14 @@ _.extend(InputControl.prototype, {
    */
   getUniform: function (key) {
     return this.uniforms[key] && this.uniforms[key].value;
+  },
+
+  setInput: function (key, value, id) {
+    var selector = id || '[data-key=' + key + ']';
+    var elems = this.domElement.querySelectorAll(selector);
+    _.each(elems, function (elem) {
+      elem.value = value;
+    });
   },
 
   /**
