@@ -3,6 +3,8 @@
 Procedural planet generator using WebGL made for the course TNM084 (Procedural
 Methods for Images) at Linköping University.
 
+[![Screen shot](report/images/app.png)](http://klaseskilson.se/TNM084-my-little-planet/)
+
 ### Setup
 
 Make sure you have [Node.js](https://nodejs.org/en/) installed. Then, install 
